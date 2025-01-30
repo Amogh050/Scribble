@@ -12,7 +12,8 @@ class PaintScreen extends StatefulWidget {
 
 class _PaintScreenState extends State<PaintScreen> {
   late IO.Socket _socket;
-  String dataOfRoom = "";
+  Map dataOfRoom = {};
+   List points = [];
 
   @override
   void initState() {
@@ -21,7 +22,7 @@ class _PaintScreenState extends State<PaintScreen> {
   }
 
   void connect() {
-    _socket = IO.io('http://192.168.66.177:3000', <String, dynamic>{
+    _socket = IO.io('http://192.168.66.236:3000', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false
     });
@@ -61,6 +62,9 @@ class _PaintScreenState extends State<PaintScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Container(),
     );
