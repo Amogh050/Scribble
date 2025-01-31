@@ -93,6 +93,26 @@ io.on("connection", (socket) => {
       console.log(err);
     }
   });
+
+  // White board sockets
+  socket.on("paint", ({ details, roomName }) => {
+    io.to(roomName).emit("points", { details: details });
+  });
+
+  // Color socket
+  socket.on("color-change", ({ color, roomName }) => {
+    io.to(roomName).emit("color-change", color);
+  });
+
+  // Stroke Socket
+  socket.on("stroke-width", ({ value, roomName }) => {
+    io.to(roomName).emit("stroke-width", value);
+  });
+
+  // Clear Screen
+  socket.on("clean-screen", (roomName) => {
+    io.to(roomName).emit("clear-screen", "");
+  });
 });
 
 server.listen(port, "0.0.0.0", () => {
