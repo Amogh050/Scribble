@@ -41,8 +41,15 @@ class _PaintScreenState extends State<PaintScreen> {
     connect();
   }
 
+  void renderTextBlank(String text) {
+    textBlankWidget.clear();
+    for (int i = 0; i < text.length; i++) {
+      textBlankWidget.add(const Text('_', style: TextStyle(fontSize: 30)));
+    }
+  }
+
   void connect() {
-    _socket = IO.io('http://192.168.66.68:3000', <String, dynamic>{
+    _socket = IO.io('http://192.168.67.56:3000', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false
     });
@@ -61,7 +68,7 @@ class _PaintScreenState extends State<PaintScreen> {
       _socket.on('updateRoom', (roomData) {
         print(roomData['word']);
         setState(() {
-          // renderTextBlank(roomData['word']);
+          renderTextBlank(roomData['word']);
           dataOfRoom = roomData;
         });
         if (roomData['isJoin'] != true) {
@@ -92,6 +99,20 @@ class _PaintScreenState extends State<PaintScreen> {
                   ..strokeWidth = strokeWidth));
           });
         }
+      });
+
+      _socket.on('msg', (msgData) {
+        setState(() {
+          messages.add(msgData);
+          guessedUserCtr = msgData['guessedUserCtr'];
+        });
+        if (guessedUserCtr == dataOfRoom['players'].length - 1) {
+          _socket.emit('change-turn', dataOfRoom['name']);
+        }
+        _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent + 40,
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut);
       });
 
       _socket.on('color-change', (colorString) {
@@ -158,95 +179,191 @@ class _PaintScreenState extends State<PaintScreen> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: width,
-                height: height * 0.55,
-                child: GestureDetector(
-                  onPanUpdate: (details) {
-                    print(details.localPosition.dx);
-                    _socket.emit('paint', {
-                      'details': {
-                        'dx': details.localPosition.dx,
-                        'dy': details.localPosition.dy,
-                      },
-                      'roomName': widget.data['name'],
-                    });
-                  },
-                  onPanStart: (details) {
-                    print(details.localPosition.dx);
-                    _socket.emit('paint', {
-                      'details': {
-                        'dx': details.localPosition.dx,
-                        'dy': details.localPosition.dy,
-                      },
-                      'roomName': widget.data['name'],
-                    });
-                  },
-                  onPanEnd: (details) {
-                    _socket.emit('paint', {
-                      'details': null,
-                      'roomName': widget.data['name'],
-                    });
+      body: SingleChildScrollView(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: width,
+                      height: height * 0.55,
+                      child: GestureDetector(
+                        onPanUpdate: (details) {
+                          print(details.localPosition.dx);
+                          _socket.emit('paint', {
+                            'details': {
+                              'dx': details.localPosition.dx,
+                              'dy': details.localPosition.dy,
+                            },
+                            'roomName': widget.data['name'],
+                          });
+                        },
+                        onPanStart: (details) {
+                          print(details.localPosition.dx);
+                          _socket.emit('paint', {
+                            'details': {
+                              'dx': details.localPosition.dx,
+                              'dy': details.localPosition.dy,
+                            },
+                            'roomName': widget.data['name'],
+                          });
+                        },
+                        onPanEnd: (details) {
+                          _socket.emit('paint', {
+                            'details': null,
+                            'roomName': widget.data['name'],
+                          });
 
-                    setState(() {
-                      points.add(
-                          null); // Add a null separator to break the connection
-                    });
-                  },
-                  child: SizedBox.expand(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      child: RepaintBoundary(
-                        child: CustomPaint(
-                          size: Size.infinite,
-                          painter: MyCustomPainter(pointsList: points),
+                          setState(() {
+                            points.add(
+                                null); // Add a null separator to break the connection
+                          });
+                        },
+                        child: SizedBox.expand(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            child: RepaintBoundary(
+                              child: CustomPaint(
+                                size: Size.infinite,
+                                painter: MyCustomPainter(pointsList: points),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.color_lens, color: selectedColor),
+                          onPressed: () {
+                            selectColor();
+                          },
+                        ),
+                        Expanded(
+                          child: Slider(
+                              min: 1.0,
+                              max: 10,
+                              label: "Strokewidth $strokeWidth",
+                              activeColor: selectedColor,
+                              value: strokeWidth,
+                              onChanged: (double value) {
+                                Map map = {
+                                  'value': value,
+                                  'roomName': dataOfRoom['name']
+                                };
+                                _socket.emit('stroke-width', map);
+                              }),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.layers_clear, color: selectedColor),
+                          onPressed: () {
+                            _socket.emit('clean-screen', dataOfRoom['name']);
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: textBlankWidget),
+                    // Displaying messages
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        shrinkWrap: true,
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) {
+                          var msg = messages[index].values;
+                          print(msg);
+                          return ListTile(
+                            title: Text(
+                              msg.elementAt(0),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                              msg.elementAt(1),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 16),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                // dataOfRoom['turn']['nickname'] != widget.data['nickname']
+                //
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: TextField(
+                        readOnly: isTextInputReadOnly,
+                        controller: controller,
+                        onSubmitted: (value) {
+                          print(value.trim());
+                          if (value.trim().isNotEmpty) {
+                            Map map = {
+                              'username': widget.data['nickname'],
+                              'msg': value.trim(),
+                              'word': dataOfRoom['word'],
+                              'roomName': widget.data['name'],
+                              'guessedUserCtr': guessedUserCtr,
+                              'totalTime': 60,
+                              'timeTaken': 60 - _start,
+                            };
+                            _socket.emit('msg', map);
+                            controller.clear();
+                          }
+                        },
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
+                          filled: true,
+                          fillColor: const Color(0xffF5F5FA),
+                          hintText: 'Your Guess',
+                          hintStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        textInputAction: TextInputAction.done,
+                      )),
+                ),
+                // : Container(),
+                SafeArea(
+                  child: IconButton(
+                    icon: Icon(Icons.menu, color: Colors.black),
+                    onPressed: () => scaffoldKey.currentState!.openDrawer(),
                   ),
                 ),
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.color_lens, color: selectedColor),
-                    onPressed: () {
-                      selectColor();
-                    },
-                  ),
-                  Expanded(
-                    child: Slider(
-                        min: 1.0,
-                        max: 10,
-                        label: "Strokewidth $strokeWidth",
-                        activeColor: selectedColor,
-                        value: strokeWidth,
-                        onChanged: (double value) {
-                          Map map = {
-                            'value': value,
-                            'roomName': dataOfRoom['name']
-                          };
-                          _socket.emit('stroke-width', map);
-                        }),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.layers_clear, color: selectedColor),
-                    onPressed: () {
-                      _socket.emit('clean-screen', dataOfRoom['name']);
-                    },
-                  ),
-                ],
-              )
-            ],
-          )
-        ],
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

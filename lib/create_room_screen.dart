@@ -15,19 +15,25 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
   String? _maxRoundsValue;
   String? _roomSizeValue;
 
-    void createRoom() {
+  void createRoom() {
     if (_nameController.text.isNotEmpty &&
         _roomNameController.text.isNotEmpty &&
         _maxRoundsValue != null &&
         _roomSizeValue != null) {
-          Map<String, String> data = {
-            "nickname": _nameController.text,
-            "name": _roomNameController.text,
-            "occupancy": _maxRoundsValue!,
-            "maxRounds": _roomSizeValue!
-          };
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaintScreen(data: data, screenFrom: 'createRoom')));
-        }
+      Map<String, String> data = {
+        "nickname": _nameController.text,
+        "name": _roomNameController.text,
+        "occupancy": _roomSizeValue!, 
+        "maxRounds": _maxRoundsValue! 
+      };
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              PaintScreen(data: data, screenFrom: 'createRoom')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill in all fields')),
+      );
+    }
   }
 
   @override
