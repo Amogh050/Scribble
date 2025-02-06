@@ -1,16 +1,13 @@
-# scriclone
+A Scribble.io Clone built using Flutter that allows users to enjoy a multiplayer drawing and guessing game. This project replicates the core features of Scribble.io with real-time gameplay.
 
-A new Flutter project.
+✨ Features
+✅ Real-time Multiplayer – Play with friends in a live drawing session.
+✅ Canvas Drawing – Smooth and responsive drawing experience.
+✅ Word Guessing – Players guess the word based on the drawing.
+✅ Rounds & Scoring – Competitive gameplay with points tracking.
+✅ Custom Rooms – Host private or public game rooms.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+🛠️ Tech Stack
+Flutter (Frontend UI)
+WebSockets (Real-time communication)
+Node.js (Backend) (For managing rooms & game logic)
