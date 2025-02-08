@@ -146,6 +146,15 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("updateScore", async (name) => {
+    try {
+      const room = await Room.findOne({ name });
+      io.to(name).emit("updateScore", room);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
   // White board sockets
   socket.on("paint", ({ details, roomName }) => {
     io.to(roomName).emit("points", { details: details });
@@ -160,6 +169,8 @@ io.on("connection", (socket) => {
   socket.on("stroke-width", ({ value, roomName }) => {
     io.to(roomName).emit("stroke-width", value);
   });
+  
+
 
   // Clear Screen
   socket.on("clean-screen", (roomName) => {

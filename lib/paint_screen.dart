@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:scriclone/models/my_custom_painter.dart';
 import 'package:scriclone/models/touch_points.dart';
+import 'package:scriclone/sidebar/player_scoreboard_drawer.dart';
 import 'package:scriclone/waiting_lobby_screen.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -157,6 +158,38 @@ class _PaintScreenState extends State<PaintScreen> {
             });
       });
 
+      _socket.on('updateScore', (roomData) {
+        scoreboard.clear();
+        for (int i = 0; i < roomData['players'].length; i++) {
+          setState(() {
+            scoreboard.add({
+              'username': roomData['players'][i]['nickname'],
+              'points': roomData['players'][i]['points'].toString()
+            });
+          });
+        }
+      });
+
+      _socket.on("show-leaderboard", (roomPlayers) {
+        scoreboard.clear();
+        for (int i = 0; i < roomPlayers.length; i++) {
+          setState(() {
+            scoreboard.add({
+              'username': roomPlayers[i]['nickname'],
+              'points': roomPlayers[i]['points'].toString()
+            });
+          });
+          if (maxPoints < int.parse(scoreboard[i]['points'])) {
+            winner = scoreboard[i]['username'];
+            maxPoints = int.parse(scoreboard[i]['points']);
+          }
+        }
+        setState(() {
+          _timer.cancel();
+          isShowFinalLeaderboard = true;
+        });
+      });
+
       _socket.on('color-change', (colorString) {
         int value = int.parse(colorString, radix: 16);
         Color otherColor = Color(value);
@@ -174,6 +207,13 @@ class _PaintScreenState extends State<PaintScreen> {
       _socket.on('clear-screen', (data) {
         setState(() {
           points.clear();
+        });
+      });
+
+      _socket.on('closeInput', (_) {
+        _socket.emit('updateScore', widget.data['name']);
+        setState(() {
+          isTextInputReadOnly = true;
         });
       });
     });
@@ -221,6 +261,8 @@ class _PaintScreenState extends State<PaintScreen> {
     }
 
     return Scaffold(
+      key: scaffoldKey,
+      drawer: PlayerScore(scoreboard),
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: dataOfRoom != null
