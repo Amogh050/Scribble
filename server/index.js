@@ -169,13 +169,32 @@ io.on("connection", (socket) => {
   socket.on("stroke-width", ({ value, roomName }) => {
     io.to(roomName).emit("stroke-width", value);
   });
-  
-
 
   // Clear Screen
   socket.on("clean-screen", (roomName) => {
     io.to(roomName).emit("clear-screen", "");
   });
+
+  socket.on("disconnect", async () => {
+    try {
+      let room = await Room.findOne({ "players.socketID": socket.id });
+      for (let i = 0; i < room.players.length; i++) {
+        if (room.players[i].socketID === socket.id) {
+          room.players.splice(i, 1);
+          break;
+        }
+      }
+      room = await room.save();
+      if (room.players.length === 1) {
+        socket.broadcast.to(room.name).emit("show-leaderboard", room.players);
+      } else {
+        socket.broadcast.to(room.name).emit("user-disconnected", room);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+  
 });
 
 server.listen(port, "0.0.0.0", () => {
