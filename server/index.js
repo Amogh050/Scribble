@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 var http = require("http");
 const app = express();
@@ -13,8 +14,8 @@ var io = require("socket.io")(server);
 app.use(express.json());
 
 // connect to our MongoDB
-const DB =
-  "mongodb+srv://root:root1234@cluster0.4gebc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const DB = process.env.MONGO_URI;
+
 
 mongoose
   .connect(DB, { useNewUrlParser: true, useUnifiedTopology: true })
