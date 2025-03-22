@@ -6,8 +6,10 @@ import 'package:scriclone/views/final_leaderboard.dart';
 import 'package:scriclone/views/home_screen.dart';
 import 'package:scriclone/models/my_custom_painter.dart';
 import 'package:scriclone/models/touch_points.dart';
-import 'package:scriclone/widgets/player_scoreboard_drawer.dart';
+// Remove the drawer import and add the popup import
+// import 'package:scriclone/widgets/player_scoreboard_drawer.dart';
 import 'package:scriclone/views/waiting_lobby_screen.dart';
+import 'package:scriclone/widgets/player_scoreboard_drawer.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class PaintScreen extends StatefulWidget {
@@ -34,7 +36,8 @@ class _PaintScreenState extends State<PaintScreen> {
   int guessedUserCtr = 0;
   late int _start = 60;
   late Timer _timer;
-  var scaffoldKey = GlobalKey<ScaffoldState>();
+  // Remove scaffoldKey as it's no longer needed for the drawer
+  // var scaffoldKey = GlobalKey<ScaffoldState>();
   List<Map> scoreboard = [];
   bool isTextInputReadOnly = false;
   int maxPoints = 0;
@@ -70,6 +73,14 @@ class _PaintScreenState extends State<PaintScreen> {
     for (int i = 0; i < text.length; i++) {
       textBlankWidget.add(const Text('_', style: TextStyle(fontSize: 30)));
     }
+  }
+
+  // Add a new method to show the player score popup
+  void showPlayerScorePopup() {
+    showDialog(
+      context: context,
+      builder: (context) => PlayerScorePopup(scoreboard),
+    );
   }
 
   void connect() {
@@ -278,8 +289,9 @@ class _PaintScreenState extends State<PaintScreen> {
     }
 
     return Scaffold(
-      key: scaffoldKey,
-      drawer: PlayerScore(scoreboard),
+      // Remove the key and drawer parameters
+      // key: scaffoldKey,
+      // drawer: PlayerScore(scoreboard),
       resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
@@ -290,7 +302,7 @@ class _PaintScreenState extends State<PaintScreen> {
                     ? SafeArea(
                         child: Column(
                           children: [
-                            // New top row with drawer icon, word/blanks, and timer
+                            // Modified top row with players button that shows popup instead of drawer
                             Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 16),
@@ -301,8 +313,8 @@ class _PaintScreenState extends State<PaintScreen> {
                                   IconButton(
                                     icon: const Icon(Icons.people,
                                         color: Colors.black, size: 38),
-                                    onPressed: () =>
-                                        scaffoldKey.currentState!.openDrawer(),
+                                    onPressed:
+                                        showPlayerScorePopup, // Use the new method here
                                   ),
                                   Expanded(
                                     child: Padding(
@@ -394,7 +406,7 @@ class _PaintScreenState extends State<PaintScreen> {
                               ),
                             ),
 
-                            // Drawing canvas
+                            // Rest of the code remains the same...
                             Container(
                               width: width,
                               height:
@@ -445,7 +457,6 @@ class _PaintScreenState extends State<PaintScreen> {
                             ),
 
                             if (!isKeyboardOpen) ...[
-                              // Color and stroke width controls
                               SizedBox(
                                 height: 50,
                                 child: Row(
@@ -482,8 +493,6 @@ class _PaintScreenState extends State<PaintScreen> {
                                   ],
                                 ),
                               ),
-
-                              // Messages list
                               Expanded(
                                 child: Container(
                                   margin: const EdgeInsets.symmetric(
@@ -548,7 +557,6 @@ class _PaintScreenState extends State<PaintScreen> {
                               ),
                             ],
 
-                            // Text input for guesses
                             if (dataOfRoom['turn']['nickname'] !=
                                 widget.data['nickname'])
                               Container(
