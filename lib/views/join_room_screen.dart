@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scriclone/views/paint_screen.dart';
+import 'package:scriclone/widgets/custom_button.dart';
 import 'package:scriclone/widgets/custom_text_field.dart';
 
 class JoinRoomScreen extends StatefulWidget {
@@ -75,32 +76,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
               SizedBox(
                 height: 40,
               ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      WidgetStateProperty.resolveWith((states) => Colors.blue),
-                  textStyle: WidgetStateProperty.resolveWith<TextStyle>(
-                    (states) => TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white, // Text color
-                    ),
-                  ),
-                  minimumSize: WidgetStateProperty.resolveWith<Size>(
-                    (states) => Size(
-                      MediaQuery.of(context).size.width / 2.5,
-                      50,
-                    ),
-                  ),
-                ),
+              CustomButton(
+                text: "JOIN",
                 onPressed: joinRoom,
-                child: const Text(
-                  'Join',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
               ),
             ],
           ),
