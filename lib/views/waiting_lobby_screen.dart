@@ -47,9 +47,16 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                     'Waiting for ${widget.occupancy - widget.noOfPlayers} players to join',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.bungee(
-                      textStyle: const TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
+                      textStyle: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        foreground: Paint()
+                          ..shader = LinearGradient(
+                            colors: <Color>[
+                              Color(0xFFFFD700),
+                              Color(0xFFFFA500)
+                            ],
+                          ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
                       ),
                     ),
                   ),
@@ -64,6 +71,7 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(color: Color(0xffa2f924), width: 6),
                       ),
                       elevation: 4,
                       child: Container(
@@ -71,7 +79,7 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 14),
                         decoration: BoxDecoration(
-                          color: const Color(0xffF5F5FA),
+                          color: Color(0xff28930f),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -82,11 +90,11 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                                 children: [
                                   Text(
                                     widget.lobbyName,
-                                    style: GoogleFonts.bungee(
+                                    style: GoogleFonts.baloo2(
                                       textStyle: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
-                                        color: Colors.black87,
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
@@ -95,13 +103,13 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                                     'Tap to copy room code',
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Colors.grey.shade600,
+                                      color: Colors.grey.shade200,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            const Icon(Icons.copy, color: Colors.grey),
+                            const Icon(Icons.copy, color: Colors.white),
                           ],
                         ),
                       ),
@@ -109,11 +117,18 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.08),
                   Text(
-                    'Players:',
+                    'Players',
                     style: GoogleFonts.bungee(
-                      textStyle: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
+                      textStyle: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        foreground: Paint()
+                          ..shader = LinearGradient(
+                            colors: <Color>[
+                              Color(0xFFFFD700),
+                              Color(0xFFFFA500)
+                            ],
+                          ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
                       ),
                     ),
                   ),
@@ -127,29 +142,40 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                         margin: const EdgeInsets.symmetric(vertical: 6),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                              color: Color.fromARGB(
+                                  255, 255, 182, 193), // Light pink border
+                              width: 8),
                         ),
                         elevation: 4,
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.deepPurple.shade200,
-                            child: Text(
-                              "${index + 1}",
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(
+                                255, 255, 105, 180), // Darker pink inside
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.pink.shade200,
+                              child: Text(
+                                "${index + 1}",
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                          title: Text(
-                            widget.players[index]['nickname'],
-                            style: GoogleFonts.bungee(
-                              textStyle: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
+                            title: Text(
+                              widget.players[index]['nickname'],
+                              style: GoogleFonts.bungee(
+                                textStyle: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
                               ),
                             ),
                           ),
