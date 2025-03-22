@@ -12,21 +12,48 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(50),
-            borderSide: BorderSide(color: Colors.transparent),
+    return Container(
+      padding: EdgeInsets.all(4), // Space for outer border
+      decoration: BoxDecoration(
+        color: Color(0xff28930f), // Outer border color
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 6,
+            spreadRadius: 1,
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          filled: true,
-          fillColor: Color(0xfff5f5fa),
-          hintText: hintText,
-          hintStyle: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          )),
+        ],
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(0x0029930f), // Inner background
+          borderRadius: BorderRadius.circular(25),
+          border: Border.all(
+            color: Color(0xffa2f924), // Inner border color
+            width: 8, // Thick inner border
+          ),
+        ),
+        child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            hintText: hintText,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.white.withOpacity(0.8),
+            ),
+          ),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+          textAlign: TextAlign.center, // Center text inside
+        ),
+      ),
     );
   }
 }

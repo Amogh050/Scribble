@@ -282,6 +282,7 @@ class _PaintScreenState extends State<PaintScreen> {
       drawer: PlayerScore(scoreboard),
       resizeToAvoidBottomInset: false,
       body: Container(
+        decoration: BoxDecoration(color: Colors.white),
         child: dataOfRoom.isEmpty
             ? const Center(child: CircularProgressIndicator())
             : dataOfRoom['isJoin'] != true
@@ -292,19 +293,17 @@ class _PaintScreenState extends State<PaintScreen> {
                             // New top row with drawer icon, word/blanks, and timer
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 16), // Increased vertical padding
+                                  horizontal: 12, vertical: 16),
                               child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // Left: Drawer icon
                                   IconButton(
-                                    icon: const Icon(Icons.menu,
-                                        color: Colors.black),
+                                    icon: const Icon(Icons.people,
+                                        color: Colors.black, size: 38),
                                     onPressed: () =>
                                         scaffoldKey.currentState!.openDrawer(),
                                   ),
-
-                                  // Center: Title and Word/Blanks
                                   Expanded(
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -337,7 +336,7 @@ class _PaintScreenState extends State<PaintScreen> {
                                                       child: Text(
                                                         '_',
                                                         style: TextStyle(
-                                                          fontSize: 30,
+                                                          fontSize: 22,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -354,29 +353,41 @@ class _PaintScreenState extends State<PaintScreen> {
                                       ),
                                     ),
                                   ),
-
-                                  // Right: Timer
                                   Container(
-                                    width: 50,
-                                    height: 50,
+                                    width: 60,
+                                    height: 60,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       shape: BoxShape.circle,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset: const Offset(0, 1),
+                                      border: Border.all(
+                                        color: Colors.grey.shade300,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        CircularProgressIndicator(
+                                          value: _start / 60,
+                                          backgroundColor: Colors.grey.shade200,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            _start > 10
+                                                ? Colors.blue
+                                                : Colors.red,
+                                          ),
+                                        ),
+                                        Text(
+                                          '$_start',
+                                          style: TextStyle(
+                                            color: _start > 10
+                                                ? Colors.blue
+                                                : Colors.red,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ],
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        '$_start',
-                                        style: const TextStyle(
-                                            color: Colors.black, fontSize: 22),
-                                      ),
                                     ),
                                   ),
                                 ],
@@ -631,7 +642,6 @@ class _PaintScreenState extends State<PaintScreen> {
                     players: dataOfRoom['players'],
                   ),
       ),
-      // Removed the floating action button with timer as it's now in the top bar
     );
   }
 }

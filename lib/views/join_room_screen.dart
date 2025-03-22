@@ -26,6 +26,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>
               PaintScreen(data: data, screenFrom: 'joinRoom')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill in all fields')),
+      );
     }
   }
 
@@ -35,10 +39,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       body: Stack(children: [
         Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blue.shade300, Colors.purple.shade400],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+            image: DecorationImage(
+              image: AssetImage(
+                  'assets/background.png'), // Replace with your image path
+              fit: BoxFit.cover,
             ),
           ),
         ),
@@ -48,11 +52,20 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
             children: [
               Text(
                 "Join Room",
-                style: GoogleFonts.pressStart2p(
-                    textStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold)),
+                style: GoogleFonts.bungee(
+                  textStyle: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    foreground: Paint()
+                      ..shader = LinearGradient(
+                        colors: <Color>[
+                          Color(0xFFFFD700),
+                          Color(0xFFFFA500),
+                          Color(0xFFFF8C00),
+                        ],
+                      ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                  ),
+                ),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.08,
