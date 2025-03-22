@@ -281,6 +281,16 @@ class _PaintScreenState extends State<PaintScreen> {
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final isKeyboardOpen = keyboardHeight > 0;
 
+    List<Map<String, dynamic>> transformScoreboard(
+        List<Map> originalScoreboard) {
+      return originalScoreboard
+          .map((player) => {
+                'name': player['username'], // Rename 'username' to 'name'
+                'score': player['points'], // Rename 'points' to 'score'
+              })
+          .toList();
+    }
+
     void selectColor() {
       showDialog(
         context: context,
@@ -803,7 +813,7 @@ class _PaintScreenState extends State<PaintScreen> {
                           ],
                         ),
                       )
-                    : FinalLeaderboard(scoreboard, winner)
+                    : FinalLeaderboard(transformScoreboard(scoreboard))
                 : WaitingLobbyScreen(
                     lobbyName: dataOfRoom['name'],
                     noOfPlayers: dataOfRoom['players'].length,
