@@ -11,20 +11,20 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin {
-  // Tracks visibility of each letter in "SKRRIBLE"
+  // Tracks visibility of each letter in "SCRIBBLE"
   List<bool> _letterVisibilities = List.filled(8, false);
   bool _showButton = false; // Controls visibility of the "PLAY" button
   late AnimationController _imageController; // Controller for image animation
   late Animation<double> _imageScaleAnimation; // Animation for image scaling
   bool _isInitialized = false; // Flag to ensure initialization is complete
 
-  // Color scheme for each letter in "SKRRIBLE"
+  // Color scheme for each letter in "SCRIBBLE"
   final List<Color> colors = [
     Color(0xFFFF0000), // Bright Red for 'S'
-    Color(0xFFFF8C00), // Vivid Orange for 'K'
+    Color(0xFFFF8C00), // Vivid Orange for 'C'
     Color(0xFFFFEB00), // Bright Yellow for 'R'
-    Color(0xFF32CD32), // Vivid Green for 'R'
-    Color(0xFF00CED1), // Bright Cyan for 'I'
+    Color(0xFF32CD32), // Vivid Green for 'I'
+    Color(0xFF00CED1), // Bright Cyan for 'B'
     Color(0xFF4169E1), // Vivid Blue for 'B'
     Color(0xFF9400D3), // Bright Purple for 'L'
     Color(0xFFFF1493), // Neon Pink for 'E'
@@ -57,7 +57,7 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
 
   // Method to handle the animation sequence
   void _startAnimation() {
-    // Animate each letter of "SKRRIBLE" sequentially
+    // Animate each letter of "SCRIBBLE" sequentially
     for (int i = 0; i < 8; i++) {
       Future.delayed(Duration(milliseconds: 400 * i), () {
         if (mounted) {
@@ -111,11 +111,11 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Animated "SKRRIBLE" title
+                  // Animated "SCRIBBLE" title
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(8, (index) {
-                      String letter = 'SKRRIBLE'[index];
+                      String letter = 'SCRIBBLE'[index];
                       Color color = colors[index];
                       return AnimatedOpacity(
                         opacity: _letterVisibilities[index] ? 1.0 : 0.0,
