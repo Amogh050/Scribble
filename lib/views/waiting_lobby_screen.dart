@@ -6,15 +6,16 @@ class WaitingLobbyScreen extends StatefulWidget {
   final int occupancy;
   final int noOfPlayers;
   final String lobbyName;
-  final List<dynamic> players; // Expected to be a list of maps with a 'nickname' key.
-  
+  final List<dynamic>
+      players; // Expected to be a list of maps with a 'nickname' key.
+
   const WaitingLobbyScreen({
-    Key? key,
+    super.key,
     required this.occupancy,
     required this.noOfPlayers,
     required this.lobbyName,
     required this.players,
-  }) : super(key: key);
+  });
 
   @override
   _WaitingLobbyScreenState createState() => _WaitingLobbyScreenState();
@@ -24,17 +25,14 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Use transparent background for the gradient container.
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          // Background Gradient
           Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.blue.shade300, Colors.purple.shade400],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+              image: DecorationImage(
+                image: AssetImage('assets/background.png'),
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -45,11 +43,10 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                  // Waiting Message
                   Text(
                     'Waiting for ${widget.occupancy - widget.noOfPlayers} players to join',
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.bungee(
                       textStyle: const TextStyle(
                         fontSize: 22,
                         color: Colors.white,
@@ -57,7 +54,6 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                     ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  // Room Name Card (Tap to copy) with added hint text and copy icon, and made wider
                   GestureDetector(
                     onTap: () {
                       Clipboard.setData(ClipboardData(text: widget.lobbyName));
@@ -72,7 +68,8 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                       elevation: 4,
                       child: Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 14),
                         decoration: BoxDecoration(
                           color: const Color(0xffF5F5FA),
                           borderRadius: BorderRadius.circular(12),
@@ -85,10 +82,12 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                                 children: [
                                   Text(
                                     widget.lobbyName,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black87,
+                                    style: GoogleFonts.bungee(
+                                      textStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black87,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 4),
@@ -109,10 +108,9 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                     ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-                  // Players Header
                   Text(
                     'Players:',
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.bungee(
                       textStyle: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
@@ -120,7 +118,6 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // Players List
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -133,7 +130,8 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                         ),
                         elevation: 4,
                         child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
                           leading: CircleAvatar(
                             backgroundColor: Colors.deepPurple.shade200,
                             child: Text(
@@ -147,10 +145,12 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                           ),
                           title: Text(
                             widget.players[index]['nickname'],
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                            style: GoogleFonts.bungee(
+                              textStyle: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
                             ),
                           ),
                         ),
