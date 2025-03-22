@@ -163,8 +163,44 @@ class _PaintScreenState extends State<PaintScreen> {
                 _timer.cancel();
                 startTimer();
               });
-              return AlertDialog(
-                  title: Center(child: Text('Word was $oldWord')));
+              return Center(
+                child: Container(
+                  padding: EdgeInsets.all(4), // Space for outer border
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[Color(0xFFFFD700), Color(0xFFFFA500)],
+                    ),
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 6,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent, // Inner background
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(
+                        color: Colors.transparent, // Inner border color
+                        width: 8, // Thick inner border
+                      ),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    child: Text(
+                      'Word was $oldWord',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.center, // Center text inside
+                    ),
+                  ),
+                ),
+              );
             });
       });
 
@@ -280,7 +316,8 @@ class _PaintScreenState extends State<PaintScreen> {
     return Scaffold(
       key: scaffoldKey,
       drawer: PlayerScore(scoreboard),
-      resizeToAvoidBottomInset: false,
+      // Changed to true to let the system adjust the layout for keyboard
+      resizeToAvoidBottomInset: true,
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
         child: dataOfRoom.isEmpty
@@ -354,8 +391,8 @@ class _PaintScreenState extends State<PaintScreen> {
                                     ),
                                   ),
                                   Container(
-                                    width: 60,
-                                    height: 60,
+                                    width: 50,
+                                    height: 50,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       shape: BoxShape.circle,
@@ -383,7 +420,7 @@ class _PaintScreenState extends State<PaintScreen> {
                                             color: _start > 10
                                                 ? Colors.blue
                                                 : Colors.red,
-                                            fontSize: 20,
+                                            fontSize: 24,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -394,243 +431,373 @@ class _PaintScreenState extends State<PaintScreen> {
                               ),
                             ),
 
-                            // Drawing canvas
-                            Container(
-                              width: width,
-                              height:
-                                  isKeyboardOpen ? height * 0.5 : height * 0.35,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey[300]!),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: GestureDetector(
-                                onPanUpdate: (details) {
-                                  _socket.emit('paint', {
-                                    'details': {
-                                      'dx': details.localPosition.dx,
-                                      'dy': details.localPosition.dy,
-                                    },
-                                    'roomName': widget.data['name'],
-                                  });
-                                },
-                                onPanStart: (details) {
-                                  _socket.emit('paint', {
-                                    'details': {
-                                      'dx': details.localPosition.dx,
-                                      'dy': details.localPosition.dy,
-                                    },
-                                    'roomName': widget.data['name'],
-                                  });
-                                },
-                                onPanEnd: (details) {
-                                  _socket.emit('paint', {
-                                    'details': null,
-                                    'roomName': widget.data['name'],
-                                  });
-                                  setState(() {
-                                    points.add(null);
-                                  });
-                                },
-                                child: ClipRRect(
+                            // Main content area (flexible to adjust with keyboard)
+                            Expanded(
+                              child: SingleChildScrollView(
+                              reverse: isKeyboardOpen,
+                              child: Column(
+                                children: [
+                                // Drawing canvas - adjusted height
+                                Container(
+                                  width: width,
+                                  height: isKeyboardOpen
+                                    ? height * 0.35
+                                    : height * 0.4,
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12),
+                                  decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.grey[300]!),
                                   borderRadius: BorderRadius.circular(20),
-                                  child: CustomPaint(
-                                    size: Size.infinite,
-                                    painter:
-                                        MyCustomPainter(pointsList: points),
                                   ),
+                                  child: GestureDetector(
+                                  onPanUpdate: (details) {
+                                    _socket.emit('paint', {
+                                    'details': {
+                                      'dx': details.localPosition.dx,
+                                      'dy': details.localPosition.dy,
+                                    },
+                                    'roomName': widget.data['name'],
+                                    });
+                                  },
+                                  onPanStart: (details) {
+                                    _socket.emit('paint', {
+                                    'details': {
+                                      'dx': details.localPosition.dx,
+                                      'dy': details.localPosition.dy,
+                                    },
+                                    'roomName': widget.data['name'],
+                                    });
+                                  },
+                                  onPanEnd: (details) {
+                                    _socket.emit('paint', {
+                                    'details': null,
+                                            'details': null,
+                                            'roomName': widget.data['name'],
+                                          });
+                                          setState(() {
+                                            points.add(null);
+                                          });
+                                        },
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: CustomPaint(
+                                            size: Size.infinite,
+                                            painter: MyCustomPainter(
+                                                pointsList: points),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    if (!isKeyboardOpen) ...[
+                                      // Color and stroke width controls
+                                      SizedBox(
+                                        height: 50,
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.color_lens,
+                                                  color: selectedColor),
+                                              onPressed: selectColor,
+                                            ),
+                                            Expanded(
+                                              child: Slider(
+                                                min: 1.0,
+                                                max: 10,
+                                                label:
+                                                    "Strokewidth $strokeWidth",
+                                                activeColor: selectedColor,
+                                                value: strokeWidth,
+                                                onChanged: (double value) {
+                                                  Map map = {
+                                                    'value': value,
+                                                    'roomName':
+                                                        dataOfRoom['name']
+                                                  };
+                                                  _socket.emit(
+                                                      'stroke-width', map);
+                                                },
+                                              ),
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.layers_clear,
+                                                  color: selectedColor),
+                                              onPressed: () {
+                                                _socket.emit('clean-screen',
+                                                    dataOfRoom['name']);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // Messages list
+                                      Container(
+                                        height: height * 0.25,
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        decoration: BoxDecoration(
+                                          color: Colors.pink[50],
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          border: Border.all(
+                                              color: Colors.pink[200]!),
+                                        ),
+                                        child: ListView.builder(
+                                          controller: _scrollController,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 8),
+                                          itemCount: messages.length,
+                                          itemBuilder: (context, index) {
+                                            var msg = messages[index].values;
+                                            return Card(
+                                              elevation: 4,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                side: BorderSide(
+                                                    color:
+                                                        Colors.pink.shade200),
+                                              ),
+                                              color: Colors.pink[100],
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 8),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      msg.elementAt(0),
+                                                      style: const TextStyle(
+                                                        color: Colors.black87,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      msg.elementAt(1),
+                                                      style: TextStyle(
+                                                        color: Colors.grey[700],
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(height: 8), // Small gap
+                                    ],
+
+                                    if (isKeyboardOpen) ...[
+                                      // Messages list (reduced height when keyboard is open)
+                                      Container(
+                                        height: height * 0.15,
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.pink[50],
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          border: Border.all(
+                                              color: Colors.pink[200]!),
+                                        ),
+                                        child: ListView.builder(
+                                          controller: _scrollController,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 8),
+                                          itemCount: messages.length,
+                                          itemBuilder: (context, index) {
+                                            var msg = messages[index].values;
+                                            return Card(
+                                              elevation: 4,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                side: BorderSide(
+                                                    color:
+                                                        Colors.pink.shade200),
+                                              ),
+                                              color: Colors.pink[100],
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 8),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      msg.elementAt(0),
+                                                      style: const TextStyle(
+                                                        color: Colors.black87,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      msg.elementAt(1),
+                                                      style: TextStyle(
+                                                        color: Colors.grey[700],
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+
+                                    // Text input for guesses
+                                    if (dataOfRoom['turn']['nickname'] !=
+                                        widget.data['nickname'])
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 20,
+                                          vertical: 10,
+                                        ),
+                                        child: Card(
+                                          elevation: 4,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            side: BorderSide(
+                                                color: Colors.green.shade400),
+                                          ),
+                                          color: const Color.fromARGB(
+                                              255, 152, 220, 155),
+                                          margin:
+                                              const EdgeInsets.only(bottom: 8),
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: TextField(
+                                                    controller: controller,
+                                                    onTap: () {
+                                                      setState(() {
+                                                        isInputFocused = true;
+                                                      });
+                                                    },
+                                                    onSubmitted: (value) {
+                                                      if (value
+                                                          .trim()
+                                                          .isNotEmpty) {
+                                                        Map map = {
+                                                          'username': widget
+                                                              .data['nickname'],
+                                                          'msg': value.trim(),
+                                                          'word': dataOfRoom[
+                                                              'word'],
+                                                          'roomName': widget
+                                                              .data['name'],
+                                                          'guessedUserCtr':
+                                                              guessedUserCtr,
+                                                          'totalTime': 60,
+                                                          'timeTaken':
+                                                              60 - _start,
+                                                        };
+                                                        _socket.emit(
+                                                            'msg', map);
+                                                        controller.clear();
+                                                        setState(() {
+                                                          isInputFocused =
+                                                              false;
+                                                        });
+                                                      }
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                      contentPadding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 16,
+                                                              vertical: 14),
+                                                      hintText:
+                                                          'Type your guess here...',
+                                                      hintStyle: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.black
+                                                            .withOpacity(0.8),
+                                                      ),
+                                                    ),
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.black,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(Icons.send_rounded,
+                                                      color: Colors
+                                                          .green.shade700),
+                                                  onPressed: () {
+                                                    if (controller.text
+                                                        .trim()
+                                                        .isNotEmpty) {
+                                                      Map map = {
+                                                        'username': widget
+                                                            .data['nickname'],
+                                                        'msg': controller.text
+                                                            .trim(),
+                                                        'word':
+                                                            dataOfRoom['word'],
+                                                        'roomName':
+                                                            widget.data['name'],
+                                                        'guessedUserCtr':
+                                                            guessedUserCtr,
+                                                        'totalTime': 60,
+                                                        'timeTaken':
+                                                            60 - _start,
+                                                      };
+                                                      _socket.emit('msg', map);
+                                                      controller.clear();
+                                                      setState(() {
+                                                        isInputFocused = false;
+                                                      });
+                                                    }
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
                             ),
-
-                            if (!isKeyboardOpen) ...[
-                              // Color and stroke width controls
-                              SizedBox(
-                                height: 50,
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(Icons.color_lens,
-                                          color: selectedColor),
-                                      onPressed: selectColor,
-                                    ),
-                                    Expanded(
-                                      child: Slider(
-                                        min: 1.0,
-                                        max: 10,
-                                        label: "Strokewidth $strokeWidth",
-                                        activeColor: selectedColor,
-                                        value: strokeWidth,
-                                        onChanged: (double value) {
-                                          Map map = {
-                                            'value': value,
-                                            'roomName': dataOfRoom['name']
-                                          };
-                                          _socket.emit('stroke-width', map);
-                                        },
-                                      ),
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.layers_clear,
-                                          color: selectedColor),
-                                      onPressed: () {
-                                        _socket.emit(
-                                            'clean-screen', dataOfRoom['name']);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              // Messages list
-                              Expanded(
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 20),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[100],
-                                    borderRadius: BorderRadius.circular(12),
-                                    border:
-                                        Border.all(color: Colors.grey[300]!),
-                                  ),
-                                  child: ListView.builder(
-                                    controller: _scrollController,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 8),
-                                    itemCount: messages.length,
-                                    itemBuilder: (context, index) {
-                                      var msg = messages[index].values;
-                                      return Container(
-                                        margin:
-                                            const EdgeInsets.only(bottom: 8),
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.1),
-                                              spreadRadius: 1,
-                                              blurRadius: 3,
-                                              offset: const Offset(0, 1),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              msg.elementAt(0),
-                                              style: const TextStyle(
-                                                color: Colors.black87,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 4),
-                                            Text(
-                                              msg.elementAt(1),
-                                              style: TextStyle(
-                                                color: Colors.grey[700],
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-
-                            // Text input for guesses
-                            if (dataOfRoom['turn']['nickname'] !=
-                                widget.data['nickname'])
-                              Container(
-                                padding: EdgeInsets.only(
-                                  left: 20,
-                                  right: 20,
-                                  bottom: isKeyboardOpen ? keyboardHeight : 20,
-                                  top: 10,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.2),
-                                      spreadRadius: 1,
-                                      blurRadius: 3,
-                                      offset: const Offset(0, -1),
-                                    ),
-                                  ],
-                                ),
-                                child: TextField(
-                                  controller: controller,
-                                  onTap: () {
-                                    setState(() {
-                                      isInputFocused = true;
-                                    });
-                                  },
-                                  onSubmitted: (value) {
-                                    if (value.trim().isNotEmpty) {
-                                      Map map = {
-                                        'username': widget.data['nickname'],
-                                        'msg': value.trim(),
-                                        'word': dataOfRoom['word'],
-                                        'roomName': widget.data['name'],
-                                        'guessedUserCtr': guessedUserCtr,
-                                        'totalTime': 60,
-                                        'timeTaken': 60 - _start,
-                                      };
-                                      _socket.emit('msg', map);
-                                      controller.clear();
-                                      setState(() {
-                                        isInputFocused = false;
-                                      });
-                                    }
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: 'Type your guess here...',
-                                    filled: true,
-                                    fillColor: Colors.grey[100],
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(25),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                      vertical: 12,
-                                    ),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(Icons.send_rounded,
-                                          color: Colors.blue[300]),
-                                      onPressed: () {
-                                        if (controller.text.trim().isNotEmpty) {
-                                          Map map = {
-                                            'username': widget.data['nickname'],
-                                            'msg': controller.text.trim(),
-                                            'word': dataOfRoom['word'],
-                                            'roomName': widget.data['name'],
-                                            'guessedUserCtr': guessedUserCtr,
-                                            'totalTime': 60,
-                                            'timeTaken': 60 - _start,
-                                          };
-                                          _socket.emit('msg', map);
-                                          controller.clear();
-                                          setState(() {
-                                            isInputFocused = false;
-                                          });
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
                           ],
                         ),
                       )

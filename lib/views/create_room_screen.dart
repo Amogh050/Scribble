@@ -52,184 +52,187 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           ),
         ),
         SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Create Room",
-                style: GoogleFonts.bungee(
-                  textStyle: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    foreground: Paint()
-                      ..shader = LinearGradient(
-                        colors: <Color>[Color(0xFFFFD700), Color(0xFFFFA500)],
-                      ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Create Room",
+                  style: GoogleFonts.bungee(
+                    textStyle: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      foreground: Paint()
+                        ..shader = LinearGradient(
+                          colors: <Color>[Color(0xFFFFD700), Color(0xFFFFA500)],
+                        ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.08,
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: CustomTextField(
-                  controller: _nameController,
-                  hintText: "Enter Your Name",
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.08,
                 ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: CustomTextField(
-                  controller: _roomNameController,
-                  hintText: "Enter Room Name",
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: CustomTextField(
+                    controller: _nameController,
+                    hintText: "Enter Your Name",
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: EdgeInsets.all(4), // Space for outer border
-                decoration: BoxDecoration(
-                  color: Color(0xff28930f), // Outer border color
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 6,
-                      spreadRadius: 1,
-                    ),
-                  ],
+                const SizedBox(height: 20),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: CustomTextField(
+                    controller: _roomNameController,
+                    hintText: "Enter Room Name",
+                  ),
                 ),
-                child: Container(
+                const SizedBox(height: 20),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.all(4), // Space for outer border
                   decoration: BoxDecoration(
-                    color: Color(0xff28930f), // Inner background
-                    borderRadius: BorderRadius.circular(25),
-                    border: Border.all(
-                      color: Color(0xffa2f924), // Inner border color
-                      width: 8, // Thin inner border
-                    ),
+                    color: Color(0xff28930f), // Outer border color
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 6,
+                        spreadRadius: 1,
+                      ),
+                    ],
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: SizedBox(
-                      width: 200, // Adjusted width
-                      child: DropdownButton<String>(
-                        alignment: Alignment.center, // Center alignment
-                        value: _maxRoundsValue,
-                        focusColor: const Color(0xff5f56fa),
-                        hint: const Text(
-                          'Select Max Rounds',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xff28930f), // Inner background
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(
+                        color: Color(0xffa2f924), // Inner border color
+                        width: 8, // Thin inner border
+                      ),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: SizedBox(
+                        width: 200, // Adjusted width
+                        child: DropdownButton<String>(
+                          alignment: Alignment.center, // Center alignment
+                          value: _maxRoundsValue,
+                          focusColor: const Color(0xff5f56fa),
+                          hint: const Text(
+                            'Select Max Rounds',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center, // Center text
                           ),
-                          textAlign: TextAlign.center, // Center text
-                        ),
-                        items: <String>["2", "5", "10", "15"]
-                            .map<DropdownMenuItem<String>>(
-                              (String value) => DropdownMenuItem(
-                                value: value,
-                                alignment: Alignment.center, // Center items
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(color: Colors.white),
+                          items: <String>["2", "5", "10", "15"]
+                              .map<DropdownMenuItem<String>>(
+                                (String value) => DropdownMenuItem(
+                                  value: value,
+                                  alignment: Alignment.center, // Center items
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (String? value) {
-                          setState(() {
-                            _maxRoundsValue = value;
-                          });
-                        },
-                        dropdownColor: Color(0xff28930f),
-                        isExpanded: true,
-                        iconEnabledColor: Colors.white,
-                        iconSize: 30,
-                        borderRadius: BorderRadius.circular(25),
+                              )
+                              .toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              _maxRoundsValue = value;
+                            });
+                          },
+                          dropdownColor: Color(0xff28930f),
+                          isExpanded: true,
+                          iconEnabledColor: Colors.white,
+                          iconSize: 30,
+                          borderRadius: BorderRadius.circular(25),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Color(0xff28930f),
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 6,
-                      spreadRadius: 1,
-                    ),
-                  ],
+                SizedBox(
+                  height: 20,
                 ),
-                child: Container(
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     color: Color(0xff28930f),
-                    borderRadius: BorderRadius.circular(25),
-                    border: Border.all(
-                      color: Color(0xffa2f924),
-                      width: 8,
-                    ),
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 6,
+                        spreadRadius: 1,
+                      ),
+                    ],
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: SizedBox(
-                      width: 200, // Adjusted width
-                      child: DropdownButton<String>(
-                        alignment: Alignment.center, // Center alignment
-                        value: _roomSizeValue,
-                        focusColor: const Color(0xff5f56fa),
-                        hint: const Text(
-                          'Select Room Size',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xff28930f),
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(
+                        color: Color(0xffa2f924),
+                        width: 8,
+                      ),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: SizedBox(
+                        width: 200, // Adjusted width
+                        child: DropdownButton<String>(
+                          alignment: Alignment.center, // Center alignment
+                          value: _roomSizeValue,
+                          focusColor: const Color(0xff5f56fa),
+                          hint: const Text(
+                            'Select Room Size',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center, // Center text
                           ),
-                          textAlign: TextAlign.center, // Center text
-                        ),
-                        items: <String>["2", "3", "4", "5", "6", "7", "8"]
-                            .map<DropdownMenuItem<String>>(
-                              (String value) => DropdownMenuItem(
-                                value: value,
-                                alignment: Alignment.center, // Center items
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(color: Colors.white),
+                          items: <String>["2", "3", "4", "5", "6", "7", "8"]
+                              .map<DropdownMenuItem<String>>(
+                                (String value) => DropdownMenuItem(
+                                  value: value,
+                                  alignment: Alignment.center, // Center items
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (String? value) {
-                          setState(() {
-                            _roomSizeValue = value;
-                          });
-                        },
-                        dropdownColor: Color(0xff28930f),
-                        isExpanded: true,
-                        iconEnabledColor: Colors.white,
-                        iconSize: 30,
-                        borderRadius: BorderRadius.circular(25),
+                              )
+                              .toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              _roomSizeValue = value;
+                            });
+                          },
+                          dropdownColor: Color(0xff28930f),
+                          isExpanded: true,
+                          iconEnabledColor: Colors.white,
+                          iconSize: 30,
+                          borderRadius: BorderRadius.circular(25),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              CustomButton(
-                text: "CREATE",
-                onPressed: createRoom,
-              ),
-            ],
+                SizedBox(
+                  height: 40,
+                ),
+                CustomButton(
+                  text: "CREATE",
+                  onPressed: createRoom,
+                ),
+              ],
+            ),
           ),
         ),
       ]),
