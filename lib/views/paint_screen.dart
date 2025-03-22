@@ -196,6 +196,7 @@ class _PaintScreenState extends State<PaintScreen> {
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
                         color: Colors.black,
+                        decoration: TextDecoration.none, // Remove underline
                       ),
                       textAlign: TextAlign.center, // Center text inside
                     ),
