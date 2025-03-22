@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scriclone/views/paint_screen.dart';
+import 'package:scriclone/widgets/custom_button.dart';
 import 'package:scriclone/widgets/custom_text_field.dart';
 
 class CreateRoomScreen extends StatefulWidget {
@@ -55,9 +56,13 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                  "Create Room",
-                  style: GoogleFonts.pressStart2p(textStyle: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold)) ,
-                ),
+                "Create Room",
+                style: GoogleFonts.pressStart2p(
+                    textStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold)),
+              ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.08,
               ),
@@ -139,32 +144,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
               SizedBox(
                 height: 40,
               ),
-              ElevatedButton(
+              CustomButton(
+                text: "CREATE",
                 onPressed: createRoom,
-                style: ButtonStyle(
-                  backgroundColor:
-                      WidgetStateProperty.resolveWith((states) => Colors.blue),
-                  textStyle: WidgetStateProperty.resolveWith<TextStyle>(
-                    (states) => TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white, // Text color
-                    ),
-                  ),
-                  minimumSize: WidgetStateProperty.resolveWith<Size>(
-                    (states) => Size(
-                      MediaQuery.of(context).size.width / 2.5,
-                      50,
-                    ),
-                  ),
-                ),
-                child: const Text(
-                  "Create",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
               ),
             ],
           ),
