@@ -2,7 +2,7 @@ name: scriclone
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -40,6 +40,13 @@ dependencies:
   google_fonts: ^6.2.1
   animate_do: ^3.3.8
   flutter_dotenv: ^5.2.1
+  flutter_app_name: ^0.1.1
+
+
+
+
+flutter_app_name:
+  name: "Scribble"
 
 dev_dependencies:
   flutter_test:
@@ -57,7 +64,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -70,6 +76,7 @@ flutter:
     - assets/name.png
     - assets/character.png
     - assets/draw_together-main.png
+    - assets/app_logo.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
