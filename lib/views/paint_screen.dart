@@ -9,7 +9,7 @@ import 'package:scriclone/models/touch_points.dart';
 // Remove the drawer import and add the popup import
 // import 'package:scriclone/widgets/player_scoreboard_drawer.dart';
 import 'package:scriclone/views/waiting_lobby_screen.dart';
-import 'package:scriclone/widgets/player_scoreboard_drawer.dart';
+import 'package:scriclone/widgets/player_scoreboard_popup.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class PaintScreen extends StatefulWidget {
