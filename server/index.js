@@ -7,7 +7,6 @@ var server = http.createServer(app);
 const mongoose = require("mongoose");
 const Room = require("./models/Room");
 const getWord = require("./api/getWord");
-
 var io = require("socket.io")(server);
 
 // middleware
@@ -15,7 +14,6 @@ app.use(express.json());
 
 // connect to our MongoDB
 const DB = process.env.MONGO_URI;
-
 
 mongoose
   .connect(DB, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -195,7 +193,6 @@ io.on("connection", (socket) => {
       console.log(err);
     }
   });
-  
 });
 
 server.listen(port, "0.0.0.0", () => {
