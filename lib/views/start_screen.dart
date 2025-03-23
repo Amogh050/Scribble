@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:scriclone/views/home_screen.dart'; // Adjust import as needed
-import 'package:scriclone/widgets/custom_button.dart'; // Adjust import as needed
+import 'package:scriclone/views/home_screen.dart'; // Import the home screen
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
@@ -10,7 +9,8 @@ class StartScreen extends StatefulWidget {
   State<StartScreen> createState() => _StartScreenState();
 }
 
-class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin {
+class _StartScreenState extends State<StartScreen>
+    with TickerProviderStateMixin {
   // Animation controllers and animations for each letter
   late List<AnimationController> _letterControllers;
   late List<Animation<double>> _scaleAnimations;
@@ -18,9 +18,6 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
   // Controller and animation for the image
   late AnimationController _imageController;
   late Animation<double> _imageScaleAnimation;
-
-  // Flag to control "PLAY" button visibility
-  bool _showButton = false;
 
   // Color scheme for each letter in "SCRIBBLE"
   final List<Color> colors = [
@@ -36,7 +33,8 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
 
   // Animation durations and delays
   final letterAnimationDuration = const Duration(milliseconds: 1500);
-  late final int staggerDelay = letterAnimationDuration.inMilliseconds ~/ 2; // 750ms
+  late final int staggerDelay =
+      letterAnimationDuration.inMilliseconds ~/ 2; // 750ms
 
   @override
   void initState() {
@@ -55,11 +53,13 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
     _scaleAnimations = _letterControllers.map((controller) {
       return TweenSequence([
         TweenSequenceItem(
-          tween: Tween(begin: 0.0, end: 15.0).chain(CurveTween(curve: Curves.easeOut)),
+          tween: Tween(begin: 0.0, end: 15.0)
+              .chain(CurveTween(curve: Curves.easeOut)),
           weight: 50, // 50% of duration for expansion (750ms)
         ),
         TweenSequenceItem(
-          tween: Tween(begin: 15.0, end: 1.0).chain(CurveTween(curve: Curves.easeIn)),
+          tween: Tween(begin: 15.0, end: 1.0)
+              .chain(CurveTween(curve: Curves.easeIn)),
           weight: 50, // 50% of duration for shrinking (750ms)
         ),
       ]).animate(controller);
@@ -79,8 +79,8 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
       ),
     );
 
-    // Start the animation sequence
-    _startAnimation();
+    // Start the animation sequence with a 1-second pause
+    Future.delayed(const Duration(seconds: 1), _startAnimation);
   }
 
   void _startAnimation() {
@@ -100,12 +100,13 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
       }
     });
 
-    // Show "PLAY" button when image animation completes
-    _imageController.addStatusListener((status) {
-      if (status == AnimationStatus.completed && mounted) {
-        setState(() {
-          _showButton = true;
-        });
+    // Navigate to the home screen 1 second after the animation ends
+    Future.delayed(Duration(milliseconds: staggerDelay * 7 + 400 + 2000), () {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
       }
     });
   }
@@ -158,51 +159,6 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
                         ),
                       );
                     }),
-                  ),
-                  // Spacing
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-                  // "PLAY" button with fade-in
-                  AnimatedOpacity(
-                    opacity: _showButton ? 1.0 : 0.0,
-                    duration: const Duration(seconds: 1),
-                    child: _showButton
-                        ? CustomButton(
-                            text: 'PLAY',
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  transitionDuration:
-                                      const Duration(milliseconds: 500),
-                                  pageBuilder:
-                                      (context, animation, secondaryAnimation) =>
-                                          const HomeScreen(),
-                                  transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child) {
-                                    return ScaleTransition(
-                                      scale: Tween<double>(begin: 0.0, end: 1.0)
-                                          .animate(
-                                        CurvedAnimation(
-                                          parent: animation,
-                                          curve: Curves.bounceIn,
-                                        ),
-                                      ),
-                                      child: FadeTransition(
-                                        opacity:
-                                            Tween(begin: 0.5, end: 1.0).animate(
-                                          CurvedAnimation(
-                                            parent: animation,
-                                            curve: Curves.bounceIn,
-                                          ),
-                                        ),
-                                        child: child,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                          )
-                        : const SizedBox(),
                   ),
                 ],
               ),

@@ -133,55 +133,57 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: widget.noOfPlayers,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: BorderSide(
-                              color: Color.fromARGB(
-                                  255, 255, 182, 193), // Light pink border
-                              width: 8),
-                        ),
-                        elevation: 4,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(
-                                255, 255, 105, 180), // Darker pink inside
+                  SingleChildScrollView(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: widget.noOfPlayers,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(
+                                color: Color.fromARGB(
+                                    255, 255, 182, 193), // Light pink border
+                                width: 8),
                           ),
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.pink.shade200,
-                              child: Text(
-                                "${index + 1}",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                          elevation: 4,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(
+                                  255, 255, 105, 180), // Darker pink inside
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.pink.shade200,
+                                child: Text(
+                                  "${index + 1}",
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                widget.players[index]['nickname'],
+                                style: GoogleFonts.bungee(
+                                  textStyle: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
                                 ),
                               ),
                             ),
-                            title: Text(
-                              widget.players[index]['nickname'],
-                              style: GoogleFonts.bungee(
-                                textStyle: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
