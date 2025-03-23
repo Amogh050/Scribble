@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 var http = require("http");
 const app = express();
@@ -90,6 +90,21 @@ io.on("connection", (socket) => {
       }
     } catch (err) {
       console.log(err);
+    }
+  });
+
+  // DELETE ROOM CALLBACK
+  socket.on("delete-room", async (name) => {
+    try {
+      const room = await Room.findOneAndDelete({ name });
+      if (room) {
+        io.to(name).emit("room-deleted", "Room has been deleted");
+        console.log(`Room ${name} deleted successfully`);
+      } else {
+        socket.emit("notCorrectGame", "Room not found");
+      }
+    } catch (err) {
+      console.log("Error deleting room:", err.message);
     }
   });
 

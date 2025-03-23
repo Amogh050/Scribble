@@ -41,6 +41,33 @@ class FinalLeaderboard extends StatelessWidget {
     }
 
     return Scaffold(
+      extendBodyBehindAppBar: true, // Make the body extend behind the app bar
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          "Leaderboard",
+          style: GoogleFonts.bungee(
+            textStyle: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              foreground: Paint()
+                ..shader = LinearGradient(
+                  colors: <Color>[Color(0xFFFFD700), Color(0xFFFFA500)],
+                ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+            ),
+          ),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout, color: Color(0xFFFFD700)),
+            onPressed: () {
+              // Implement logout functionality here
+            },
+          ),
+        ],
+      ),
       body: Container(
         // Apply background image from assets
         decoration: const BoxDecoration(
@@ -52,21 +79,6 @@ class FinalLeaderboard extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              // Leaderboard Title
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Text(
-                  'Leaderboard',
-                  style: GoogleFonts.bungee(
-                    textStyle: const TextStyle(
-                      fontSize: 40,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-
               // Top Players Cards Section
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -149,7 +161,9 @@ class FinalLeaderboard extends StatelessWidget {
                     height: 50,
                     child: CustomButton(
                       text: 'Play Again',
-                      onPressed: () {},
+                      onPressed: () {
+                        // Implement play again functionality here
+                      },
                     )),
               ),
             ],

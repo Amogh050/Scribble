@@ -15,7 +15,7 @@ class CustomTextField extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(4), // Space for outer border
       decoration: BoxDecoration(
-        color: Color(0xff28930f), // Outer border color
+        color: Colors.brown, // Outer border color
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
@@ -27,11 +27,12 @@ class CustomTextField extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: Color(0x0029930f), // Inner background
+          color: Color.fromARGB(
+              255, 154, 238, 53), // Inner background (light green)
           borderRadius: BorderRadius.circular(25),
           border: Border.all(
-            color: Color(0xffa2f924), // Inner border color
-            width: 8, // Thick inner border
+            color: Colors.white, // Inner border color (white)
+            width: 4, // Thick inner border
           ),
         ),
         child: TextField(
@@ -43,13 +44,13 @@ class CustomTextField extends StatelessWidget {
             hintStyle: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.black.withOpacity(0.8),
             ),
           ),
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: Colors.black,
           ),
           textAlign: TextAlign.center, // Center text inside
         ),

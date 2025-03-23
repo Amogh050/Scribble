@@ -36,6 +36,29 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true, // Make the body extend behind the app bar
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Color(0xFFFFD700)),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          "Join Room",
+          style: GoogleFonts.bungee(
+            textStyle: TextStyle(
+              fontSize: 38,
+              fontWeight: FontWeight.bold,
+              foreground: Paint()
+                ..shader = LinearGradient(
+                  colors: <Color>[Color(0xFFFFD700), Color(0xFFFFA500)],
+                ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+            ),
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Stack(children: [
         Container(
           decoration: BoxDecoration(
@@ -48,50 +71,54 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         ),
         SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Join Room",
-                style: GoogleFonts.bungee(
-                  textStyle: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    foreground: Paint()
-                      ..shader = LinearGradient(
-                        colors: <Color>[
-                          Color(0xFFFFD700),
-                          Color(0xFFFFA500),
-                          Color(0xFFFF8C00),
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 16),
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFFF9C4), // Light yellow shade
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Color(0xFF8D6E63), // Brown border
+                          width: 4,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CustomTextField(
+                              controller: _nameController,
+                              hintText: "Enter Your Name",
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CustomTextField(
+                              controller: _roomNameController,
+                              hintText: "Enter Room Name",
+                            ),
+                          ),
                         ],
-                      ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                      ),
+                    ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.08,
-              ),
+              // Join button at bottom
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: CustomTextField(
-                  controller: _nameController,
-                  hintText: "Enter Your Name",
+                padding: EdgeInsets.all(20),
+                width: double.infinity,
+                child: CustomButton(
+                  text: "JOIN",
+                  onPressed: joinRoom,
                 ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: CustomTextField(
-                  controller: _roomNameController,
-                  hintText: "Enter Room Name",
-                ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 40,
-              ),
-              CustomButton(
-                text: "JOIN",
-                onPressed: joinRoom,
               ),
             ],
           ),
