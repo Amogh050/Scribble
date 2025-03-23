@@ -11,12 +11,16 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin {
-  // Tracks visibility of each letter in "SCRIBBLE"
-  List<bool> _letterVisibilities = List.filled(8, false);
-  bool _showButton = false; // Controls visibility of the "PLAY" button
-  late AnimationController _imageController; // Controller for image animation
-  late Animation<double> _imageScaleAnimation; // Animation for image scaling
-  bool _isInitialized = false; // Flag to ensure initialization is complete
+  // Animation controllers and animations for each letter
+  late List<AnimationController> _letterControllers;
+  late List<Animation<double>> _scaleAnimations;
+
+  // Controller and animation for the image
+  late AnimationController _imageController;
+  late Animation<double> _imageScaleAnimation;
+
+  // Flag to control "PLAY" button visibility
+  bool _showButton = false;
 
   // Color scheme for each letter in "SCRIBBLE"
   final List<Color> colors = [
@@ -30,57 +34,77 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
     Color(0xFFFF1493), // Neon Pink for 'E'
   ];
 
+  // Animation durations and delays
+  final letterAnimationDuration = const Duration(milliseconds: 1500);
+  late final int staggerDelay = letterAnimationDuration.inMilliseconds ~/ 2; // 750ms
+
   @override
   void initState() {
     super.initState();
 
-    // Initialize AnimationController for the image pop-up effect
-    _imageController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 500), // Image animation duration
-    );
-
-    // Define the scale animation (from 0.0 to 1.0) with a bounce effect
-    _imageScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _imageController,
-        curve: Curves.bounceOut, // Bouncy scaling effect
+    // Initialize letter animation controllers (8 letters in "SCRIBBLE")
+    _letterControllers = List.generate(
+      8,
+      (index) => AnimationController(
+        vsync: this,
+        duration: letterAnimationDuration,
       ),
     );
 
-    // Mark initialization as complete
-    _isInitialized = true;
+    // Define scale animations for each letter: 0 -> 15 -> 1
+    _scaleAnimations = _letterControllers.map((controller) {
+      return TweenSequence([
+        TweenSequenceItem(
+          tween: Tween(begin: 0.0, end: 15.0).chain(CurveTween(curve: Curves.easeOut)),
+          weight: 50, // 50% of duration for expansion (750ms)
+        ),
+        TweenSequenceItem(
+          tween: Tween(begin: 15.0, end: 1.0).chain(CurveTween(curve: Curves.easeIn)),
+          weight: 50, // 50% of duration for shrinking (750ms)
+        ),
+      ]).animate(controller);
+    }).toList();
+
+    // Initialize image animation controller
+    _imageController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+
+    // Define image scale animation with bounce effect
+    _imageScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _imageController,
+        curve: Curves.bounceOut,
+      ),
+    );
 
     // Start the animation sequence
     _startAnimation();
   }
 
-  // Method to handle the animation sequence
   void _startAnimation() {
-    // Animate each letter of "SCRIBBLE" sequentially
+    // Start each letter's animation with a 750ms stagger
     for (int i = 0; i < 8; i++) {
-      Future.delayed(Duration(milliseconds: 400 * i), () {
+      Future.delayed(Duration(milliseconds: staggerDelay * i), () {
         if (mounted) {
-          setState(() {
-            _letterVisibilities[i] = true; // Show the letter
-          });
-          if (i == 7) {
-            // After the last letter, start the image animation with a delay
-            Future.delayed(Duration(milliseconds: 400), () {
-              if (mounted) {
-                _imageController.forward(); // Trigger image pop-up
-              }
-            });
-          }
+          _letterControllers[i].forward();
         }
       });
     }
 
-    // Show the "PLAY" button when the image animation completes
+    // Start image animation 400ms after the last letter starts
+    Future.delayed(Duration(milliseconds: staggerDelay * 7 + 400), () {
+      if (mounted) {
+        _imageController.forward();
+      }
+    });
+
+    // Show "PLAY" button when image animation completes
     _imageController.addStatusListener((status) {
       if (status == AnimationStatus.completed && mounted) {
         setState(() {
-          _showButton = true; // Display the button
+          _showButton = true;
         });
       }
     });
@@ -88,7 +112,11 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
 
   @override
   void dispose() {
-    _imageController.dispose(); // Clean up the controller
+    // Dispose of all letter controllers
+    for (var controller in _letterControllers) {
+      controller.dispose();
+    }
+    _imageController.dispose();
     super.dispose();
   }
 
@@ -97,9 +125,9 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
     return Scaffold(
       body: Stack(
         children: [
-          // Background image (optional, adjust as needed)
+          // Background image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/background.png'),
                 fit: BoxFit.cover,
@@ -111,15 +139,14 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Animated "SCRIBBLE" title
+                  // Animated "SCRIBBLE" title with scaling
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(8, (index) {
                       String letter = 'SCRIBBLE'[index];
                       Color color = colors[index];
-                      return AnimatedOpacity(
-                        opacity: _letterVisibilities[index] ? 1.0 : 0.0,
-                        duration: Duration(milliseconds: 550),
+                      return ScaleTransition(
+                        scale: _scaleAnimations[index],
                         child: Text(
                           letter,
                           style: GoogleFonts.bubblegumSans(
@@ -132,28 +159,12 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
                       );
                     }),
                   ),
-                  // Spacing between title and image
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  // "draw_together" image with pop-up animation, only if initialized
-                  if (_isInitialized)
-                    ScaleTransition(
-                      scale: _imageScaleAnimation,
-                      child: FadeTransition(
-                        opacity: _imageScaleAnimation,
-                        child: Image.asset(
-                          'assets/draw_together-main.png',
-                          width: 400, // Adjust size as needed
-                          height: 400,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  // Spacing between image and button
+                  // Spacing
                   SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-                  // "PLAY" button with fade-in effect
+                  // "PLAY" button with fade-in
                   AnimatedOpacity(
                     opacity: _showButton ? 1.0 : 0.0,
-                    duration: Duration(seconds: 1),
+                    duration: const Duration(seconds: 1),
                     child: _showButton
                         ? CustomButton(
                             text: 'PLAY',
@@ -161,10 +172,10 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
                               Navigator.of(context).push(
                                 PageRouteBuilder(
                                   transitionDuration:
-                                      Duration(milliseconds: 500),
-                                  pageBuilder: (context, animation,
-                                          secondaryAnimation) =>
-                                      const HomeScreen(), // Replace with your HomeScreen
+                                      const Duration(milliseconds: 500),
+                                  pageBuilder:
+                                      (context, animation, secondaryAnimation) =>
+                                          const HomeScreen(),
                                   transitionsBuilder: (context, animation,
                                       secondaryAnimation, child) {
                                     return ScaleTransition(
@@ -191,7 +202,7 @@ class _StartScreenState extends State<StartScreen> with TickerProviderStateMixin
                               );
                             },
                           )
-                        : SizedBox(), // Placeholder when button is not visible
+                        : const SizedBox(),
                   ),
                 ],
               ),
