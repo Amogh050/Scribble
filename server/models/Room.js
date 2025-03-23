@@ -39,4 +39,4 @@ const roomSchema = new mongoose.Schema({
 })
 
 const gameModel = mongoose.model('Room', roomSchema);
-module.exports = gameModel;
+module.exports = gameModel; 

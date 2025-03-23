@@ -119,7 +119,7 @@ class _PaintScreenState extends State<PaintScreen> {
 
       _socket.on('points', (point) {
         if (point['details'] != null) {
-          setState(() {
+          setState(() { 
             points.add(TouchPoints(
                 points: Offset((point['details']['dx']).toDouble(),
                     (point['details']['dy']).toDouble()),

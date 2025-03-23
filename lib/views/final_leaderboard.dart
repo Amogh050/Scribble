@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scriclone/widgets/custom_button.dart';
+import 'package:scriclone/views/home_screen.dart'; // Import the home screen
+import 'dart:async'; // Import the Timer
 
 class FinalLeaderboard extends StatelessWidget {
   final List<Map<String, dynamic>> scoreboard;
@@ -40,6 +42,14 @@ class FinalLeaderboard extends StatelessWidget {
       topThree = [sortedPlayers[0], {}, {}]; // First, Empty, Empty
     }
 
+    // Schedule navigation to home screen after 30 seconds
+    Timer(Duration(seconds: 30), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    });
+
     return Scaffold(
       extendBodyBehindAppBar: true, // Make the body extend behind the app bar
       appBar: AppBar(
@@ -59,14 +69,6 @@ class FinalLeaderboard extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout, color: Color(0xFFFFD700)),
-            onPressed: () {
-              // Implement logout functionality here
-            },
-          ),
-        ],
       ),
       body: Container(
         // Apply background image from assets
@@ -162,7 +164,10 @@ class FinalLeaderboard extends StatelessWidget {
                     child: CustomButton(
                       text: 'Play Again',
                       onPressed: () {
-                        // Implement play again functionality here
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                        );
                       },
                     )),
               ),
