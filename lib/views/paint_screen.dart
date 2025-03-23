@@ -8,6 +8,7 @@ import 'package:scriclone/models/my_custom_painter.dart';
 import 'package:scriclone/models/touch_points.dart';
 
 import 'package:scriclone/views/waiting_lobby_screen.dart';
+import 'package:scriclone/widgets/loader.dart';
 import 'package:scriclone/widgets/player_scoreboard_popup.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -333,7 +334,7 @@ class _PaintScreenState extends State<PaintScreen> {
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
         child: dataOfRoom.isEmpty
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(child: Loader())
             : dataOfRoom['isJoin'] != true
                 ? !isShowFinalLeaderboard
                     ? SafeArea(
