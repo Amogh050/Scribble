@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scriclone/views/home_screen.dart';
-import 'package:scriclone/views/paint_screen.dart';
 import 'package:scriclone/views/start_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
