@@ -76,6 +76,11 @@ flutter run
 4. If you're guessing, type the correct word in the chat before time runs out.
 5. Earn points for correct guesses and win by having the highest score!
 
+
+## Demo Preview  
+Watch the game in action! 🎥  
+[![Scribble Demo](https://img.youtube.com/vi/-l84KezWrF0/1.jpg)](https://youtu.be/-l84KezWrF0)  
+
 ## Screenshots
 <div align="center">
   <img src="https://github.com/user-attachments/assets/ad771d5b-38c7-4c32-a8c7-67f10f818ced" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
