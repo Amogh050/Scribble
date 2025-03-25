@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:scriclone/views/home_screen.dart'; // Import the home screen
+import 'package:scriclone/views/home_screen.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
@@ -11,15 +11,12 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen>
     with TickerProviderStateMixin {
-  // Animation controllers and animations for each letter
   late List<AnimationController> _letterControllers;
   late List<Animation<double>> _scaleAnimations;
 
-  // Controller and animation for the image
   late AnimationController _imageController;
   late Animation<double> _imageScaleAnimation;
 
-  // Color scheme for each letter in "SCRIBBLE"
   final List<Color> colors = [
     Color(0xFFFF0000), // Bright Red for 'S'
     Color(0xFFFF8C00), // Vivid Orange for 'C'
@@ -31,16 +28,14 @@ class _StartScreenState extends State<StartScreen>
     Color(0xFFFF1493), // Neon Pink for 'E'
   ];
 
-  // Animation durations and delays
   final letterAnimationDuration = const Duration(milliseconds: 1500);
   late final int staggerDelay =
-      letterAnimationDuration.inMilliseconds ~/ 2; // 750ms
+      letterAnimationDuration.inMilliseconds ~/ 2; 
 
   @override
   void initState() {
     super.initState();
 
-    // Initialize letter animation controllers (8 letters in "SCRIBBLE")
     _letterControllers = List.generate(
       8,
       (index) => AnimationController(
@@ -49,29 +44,26 @@ class _StartScreenState extends State<StartScreen>
       ),
     );
 
-    // Define scale animations for each letter: 0 -> 15 -> 1
     _scaleAnimations = _letterControllers.map((controller) {
       return TweenSequence([
         TweenSequenceItem(
           tween: Tween(begin: 0.0, end: 15.0)
               .chain(CurveTween(curve: Curves.easeOut)),
-          weight: 50, // 50% of duration for expansion (750ms)
+          weight: 50,
         ),
         TweenSequenceItem(
           tween: Tween(begin: 15.0, end: 1.0)
               .chain(CurveTween(curve: Curves.easeIn)),
-          weight: 50, // 50% of duration for shrinking (750ms)
+          weight: 50,
         ),
       ]).animate(controller);
     }).toList();
 
-    // Initialize image animation controller
     _imageController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
 
-    // Define image scale animation with bounce effect
     _imageScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _imageController,
@@ -79,12 +71,10 @@ class _StartScreenState extends State<StartScreen>
       ),
     );
 
-    // Start the animation sequence with a 1-second pause
     Future.delayed(const Duration(seconds: 1), _startAnimation);
   }
 
   void _startAnimation() {
-    // Start each letter's animation with a 750ms stagger
     for (int i = 0; i < 8; i++) {
       Future.delayed(Duration(milliseconds: staggerDelay * i), () {
         if (mounted) {
@@ -93,14 +83,12 @@ class _StartScreenState extends State<StartScreen>
       });
     }
 
-    // Start image animation 400ms after the last letter starts
     Future.delayed(Duration(milliseconds: staggerDelay * 7 + 400), () {
       if (mounted) {
         _imageController.forward();
       }
     });
 
-    // Navigate to the home screen 1 second after the animation ends
     Future.delayed(Duration(milliseconds: staggerDelay * 7 + 400 + 2000), () {
       if (mounted) {
         Navigator.pushReplacement(
@@ -113,7 +101,6 @@ class _StartScreenState extends State<StartScreen>
 
   @override
   void dispose() {
-    // Dispose of all letter controllers
     for (var controller in _letterControllers) {
       controller.dispose();
     }
@@ -126,7 +113,6 @@ class _StartScreenState extends State<StartScreen>
     return Scaffold(
       body: Stack(
         children: [
-          // Background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(

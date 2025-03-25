@@ -15,12 +15,9 @@ class _LoaderState extends State<Loader> {
   @override
   void initState() {
     super.initState();
-    // Start a timer when the screen loads
     _timer = Timer(const Duration(seconds: 15), () {
       if (mounted) {
-        // Navigate back to the previous screen
         Navigator.of(context).pop();
-        // Show a SnackBar with the message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Please check your internet connection'),
@@ -33,7 +30,6 @@ class _LoaderState extends State<Loader> {
 
   @override
   void dispose() {
-    // Cancel the timer when the widget is disposed to avoid memory leaks
     _timer.cancel();
     super.dispose();
   }

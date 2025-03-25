@@ -36,7 +36,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true, // Make the body extend behind the app bar
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -64,7 +64,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
-                  'assets/background.png'), // Replace with your image path
+                  'assets/background.png'),
               fit: BoxFit.cover,
             ),
           ),
@@ -80,10 +80,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                     child: Container(
                       padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Color(0xFFFFF9C4), // Light yellow shade
+                        color: Color(0xFFFFF9C4),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Color(0xFF8D6E63), // Brown border
+                          color: Color(0xFF8D6E63),
                           width: 4,
                         ),
                       ),

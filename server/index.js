@@ -37,7 +37,7 @@ io.on("connection", (socket) => {
       }
 
       let room = new Room();
-      const word = getWord(); // Add 'await' if getWord() is async
+      const word = getWord();
       room.word = word;
       room.name = name;
       room.occupancy = occupancy;
@@ -51,7 +51,7 @@ io.on("connection", (socket) => {
       room.players.push(player);
       console.log("Saving room:", room);
       room = await room.save();
-      console.log("Room saved:", room); // Debug log
+      console.log("Room saved:", room);
       socket.join(name);
       io.to(name).emit("updateRoom", room);
     } catch (err) {

@@ -3,13 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final IconData? icon; // ✅ Make the icon nullable
+  final IconData? icon;
   final VoidCallback onPressed;
 
   const CustomButton({
     super.key,
     required this.text,
-    this.icon, // ✅ Icon is now optional
+    this.icon,
     required this.onPressed,
   });
 

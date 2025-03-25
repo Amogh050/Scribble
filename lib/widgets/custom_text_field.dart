@@ -13,9 +13,9 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(4), // Space for outer border
+      padding: EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Colors.brown, // Outer border color
+        color: Colors.brown,
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
@@ -28,11 +28,11 @@ class CustomTextField extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Color.fromARGB(
-              255, 154, 238, 53), // Inner background (light green)
+              255, 154, 238, 53),
           borderRadius: BorderRadius.circular(25),
           border: Border.all(
-            color: Colors.white, // Inner border color (white)
-            width: 4, // Thick inner border
+            color: Colors.white,
+            width: 4,
           ),
         ),
         child: TextField(
@@ -52,7 +52,7 @@ class CustomTextField extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: Colors.black,
           ),
-          textAlign: TextAlign.center, // Center text inside
+          textAlign: TextAlign.center,
         ),
       ),
     );

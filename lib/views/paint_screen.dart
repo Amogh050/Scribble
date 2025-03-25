@@ -485,7 +485,6 @@ class _PaintScreenState extends State<PaintScreen> {
                                         onPanEnd: (details) {
                                           _socket.emit('paint', {
                                             'details': null,
-                                            'details': null,
                                             'roomName': widget.data['name'],
                                           });
                                           setState(() {

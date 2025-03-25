@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scriclone/widgets/custom_button.dart';
-import 'package:scriclone/views/home_screen.dart'; // Import the home screen
-import 'dart:async'; // Import the Timer
+import 'package:scriclone/views/home_screen.dart';
+import 'dart:async';
 
 class FinalLeaderboard extends StatelessWidget {
   final List<Map<String, dynamic>> scoreboard;
@@ -11,7 +11,6 @@ class FinalLeaderboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sort scoreboard by 'score' in descending order
     List<Map<String, dynamic>> sortedPlayers = List.from(scoreboard);
     sortedPlayers.sort((a, b) {
       int scoreA = int.tryParse(a['score']?.toString() ?? '0') ?? 0;
@@ -19,30 +18,27 @@ class FinalLeaderboard extends StatelessWidget {
       return scoreB.compareTo(scoreA);
     });
 
-    // Add rank to each player
     sortedPlayers.asMap().forEach((index, player) {
       player['rank'] = index + 1;
     });
 
-    // Get top three players if available
     List<Map<String, dynamic>> topThree = [];
     if (sortedPlayers.length >= 3) {
       topThree = [
         sortedPlayers[0],
         sortedPlayers[1],
         sortedPlayers[2]
-      ]; // First, Second, Third
+      ];
     } else if (sortedPlayers.length == 2) {
       topThree = [
         sortedPlayers[0],
         sortedPlayers[1],
         {}
-      ]; // First, Second, Empty
+      ];
     } else if (sortedPlayers.length == 1) {
-      topThree = [sortedPlayers[0], {}, {}]; // First, Empty, Empty
+      topThree = [sortedPlayers[0], {}, {}];
     }
 
-    // Schedule navigation to home screen after 30 seconds
     Timer(Duration(seconds: 30), () {
       Navigator.pushReplacement(
         context,
@@ -51,7 +47,7 @@ class FinalLeaderboard extends StatelessWidget {
     });
 
     return Scaffold(
-      extendBodyBehindAppBar: true, // Make the body extend behind the app bar
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -71,7 +67,6 @@ class FinalLeaderboard extends StatelessWidget {
         centerTitle: true,
       ),
       body: Container(
-        // Apply background image from assets
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/background.png'),
@@ -81,7 +76,6 @@ class FinalLeaderboard extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              // Top Players Cards Section
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Row(
@@ -98,7 +92,6 @@ class FinalLeaderboard extends StatelessWidget {
                 ),
               ),
 
-              // Table Header
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Container(
@@ -143,7 +136,6 @@ class FinalLeaderboard extends StatelessWidget {
                 ),
               ),
 
-              // Player Rankings List
               Expanded(
                 child: ListView.builder(
                   padding:
@@ -155,7 +147,6 @@ class FinalLeaderboard extends StatelessWidget {
                 ),
               ),
 
-              // Play Again Button
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: SizedBox(
@@ -183,7 +174,6 @@ class FinalLeaderboard extends StatelessWidget {
       return SizedBox(width: 100);
     }
 
-    // Card sizing and elevation based on position
     double cardWidth = position == 1 ? 120.0 : 100.0;
     double avatarSize = position == 1 ? 70.0 : 60.0;
     double cardHeight = position == 1 ? 160.0 : 130.0;
@@ -212,7 +202,6 @@ class FinalLeaderboard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Player Avatar
           Container(
             width: avatarSize,
             height: avatarSize,
@@ -244,7 +233,6 @@ class FinalLeaderboard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
-          // Player Score - no coin icon
           Text(
             player['score'].toString(),
             style: TextStyle(
@@ -263,7 +251,7 @@ class FinalLeaderboard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(
-            0.85), // Slightly transparent for background visibility
+            0.85),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -278,7 +266,6 @@ class FinalLeaderboard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(
           children: [
-            // Rank Number with fixed width
             SizedBox(
               width: 80,
               child: Center(
@@ -292,7 +279,6 @@ class FinalLeaderboard extends StatelessWidget {
               ),
             ),
 
-            // Player Name with Avatar
             Expanded(
               child: Row(
                 children: [
@@ -324,7 +310,6 @@ class FinalLeaderboard extends StatelessWidget {
               ),
             ),
 
-            // Points with fixed width
             SizedBox(
               width: 80,
               child: Center(

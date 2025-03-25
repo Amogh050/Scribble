@@ -7,7 +7,7 @@ class WaitingLobbyScreen extends StatefulWidget {
   final int noOfPlayers;
   final String lobbyName;
   final List<dynamic>
-      players; // Expected to be a list of maps with a 'nickname' key.
+      players;
 
   const WaitingLobbyScreen({
     super.key,
@@ -145,14 +145,14 @@ class _WaitingLobbyScreenState extends State<WaitingLobbyScreen> {
                             borderRadius: BorderRadius.circular(12),
                             side: BorderSide(
                                 color: Color.fromARGB(
-                                    255, 255, 182, 193), // Light pink border
+                                    255, 255, 182, 193),
                                 width: 8),
                           ),
                           elevation: 4,
                           child: Container(
                             decoration: BoxDecoration(
                               color: Color.fromARGB(
-                                  255, 255, 105, 180), // Darker pink inside
+                                  255, 255, 105, 180),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: ListTile(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:scriclone/views/create_room_screen.dart';
 import 'package:scriclone/views/join_room_screen.dart';
@@ -48,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       width: 200,
                       child: CustomButton(
-                        // ✅ Use the extracted button
                         text: "CREATE",
                         icon: Icons.add,
                         onPressed: () {
@@ -63,7 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       width: 200,
                       child: CustomButton(
-                        // ✅ Use the extracted button
                         text: "JOIN",
                         icon: Icons.group,
                         onPressed: () {
