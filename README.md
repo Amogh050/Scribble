@@ -1,6 +1,6 @@
 # Scribble
 
-Scribble is a fun and interactive multiplayer drawing and guessing game where players take turns drawing an assigned word while others try to guess it. Compete with friends or random players in a fast-paced game that challenges your creativity and word-guessing skills!
+Scribble is a fun and interactive multiplayer drawing and guessing game where players take turns drawing an assigned word while others try to guess it. Compete with friends in a fast-paced game that challenges your creativity and word-guessing skills!
 
 ## Download APK  
 Want to try the game? Download the latest APK and start playing! 🎮  
@@ -53,40 +53,59 @@ Watch the game in action! 🎥
 ## Installation
 
 ### Prerequisites
-Ensure you have the following installed:
-* **Flutter SDK**: [Download here](https://flutter.dev/docs/get-started/install)
-* **Node.js & npm**: [Download here](https://nodejs.org/)
-* **MongoDB**: [Download here](https://www.mongodb.com/try/download/community)
+Ensure you have the following installed on your system:
+- **Flutter SDK**: [Download here](https://flutter.dev/docs/get-started/install)
+- **Node.js & npm**: [Download here](https://nodejs.org/)
+- **MongoDB**: [Download here](https://www.mongodb.com/try/download/community)
 
-### Steps
+### Steps to Run the App Locally
+
 1. **Clone the Repository**
+   ```sh
+   git clone https://github.com/ajax-39/Scribble.git
+   cd Scribble
+   ```
 
-```
-git clone https://github.com/yourusername/scribble.git
-cd scribble
-```
+2. **Install Dependencies**
+   - **Frontend**:
+     ```sh
+     flutter pub get
+     ```
+   - **Backend**:
+     ```sh
+     cd server
+     npm install
+     ```
 
-2. **Backend Setup**
+3. **Generate `.env` Files**
+   - **In the root directory (`Scribble/.env`)**, create a `.env` file and add:
+     ```env
+     SERVER_URL=http://<youripaddress>:3000
+     ```
+   - **In the `server` folder (`Scribble/server/.env`)**, create a `.env` file and add:
+     ```env
+     MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/<dbname>?retryWrites=true&w=majority
+     PORT=3000
+     ```
+     > **Note:** You need to create a **MongoDB Atlas Cluster**, get the **connection URL**, and replace `<username>`, `<password>`, and `<dbname>` accordingly.
 
-```
-cd backend
-npm install
-node server.js
-```
+4. **Run the Application**
+   - **Start the backend server**:
+     ```sh
+     cd server
+     node index.js
+     ```
+   - **Run the Flutter app**:
+     ```sh
+     cd ..
+     flutter run
+     ```
 
-3. **Frontend Setup**
-
-```
-cd ../frontend
-flutter pub get
-flutter run
-```
-
-4. Open the app and start playing!
+Now, the app should be running locally! 🚀
 
 ## Usage
 1. Open the game and choose a nickname.
-2. Join a public game or create a private room and share the invite link.
+2. Create a private room and share the invite link.
 3. When it's your turn, draw the given word within the time limit.
 4. If you're guessing, type the correct word in the chat before time runs out.
 5. Earn points for correct guesses and win by having the highest score!
