@@ -2,6 +2,21 @@
 
 Scribble is a fun and interactive multiplayer drawing and guessing game where players take turns drawing an assigned word while others try to guess it. Compete with friends or random players in a fast-paced game that challenges your creativity and word-guessing skills!
 
+## Download APK  
+Want to try the game? Download the latest APK and start playing! 🎮  
+
+<a href="http://bit.ly/4hLVMaj" target="_blank">
+  <img src="https://github.com/user-attachments/assets/10070ed8-a6f2-4fe2-89d5-01797d5b1260" alt="Download APK" width="200"/>
+</a>  
+
+🔽 **Click Below to Download** 🔽  
+[📥 Download APK](http://bit.ly/4hLVMaj)  
+
+## Demo Preview  
+Watch the game in action! 🎥  
+[![Scribble Demo](https://img.youtube.com/vi/-l84KezWrF0/1.jpg)](https://youtu.be/-l84KezWrF0)  
+
+
 ## Table of Contents
 * [Features](#features)
 * [Technologies Used](#technologies-used)
@@ -75,11 +90,6 @@ flutter run
 3. When it's your turn, draw the given word within the time limit.
 4. If you're guessing, type the correct word in the chat before time runs out.
 5. Earn points for correct guesses and win by having the highest score!
-
-
-## Demo Preview  
-Watch the game in action! 🎥  
-[![Scribble Demo](https://img.youtube.com/vi/-l84KezWrF0/1.jpg)](https://youtu.be/-l84KezWrF0)  
 
 ## Screenshots
 <div align="center">
