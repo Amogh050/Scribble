@@ -1,9 +1,26 @@
 # Scribble
 
+## Project Description
 Scribble is a fun and interactive multiplayer drawing and guessing game where players take turns drawing an assigned word while others try to guess it. Compete with friends in a fast-paced game that challenges your creativity and word-guessing skills!
 
-## Download APK  
-Want to try the game? Download the latest APK and start playing! 🎮  
+## Screenshots
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/ad771d5b-38c7-4c32-a8c7-67f10f818ced" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
+  <img src="https://github.com/user-attachments/assets/97196193-ca8a-47e3-8d93-bf0b500ff416" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
+  <img src="https://github.com/user-attachments/assets/9369bb61-7f43-4f1c-8c7e-b439c8576b11" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
+</div>
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/314a9245-6a4f-4ad5-a56d-7ac5af7d2a37" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
+  <img src="https://github.com/user-attachments/assets/8714749b-8349-44ce-9bbe-19e6b281918f" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
+  <img src="https://github.com/user-attachments/assets/506f0277-61a9-449a-bef4-06e45b5955c0" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
+</div>
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/a1edb8b4-6d26-41ad-aac1-e88135d1887d" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
+  <img src="https://github.com/user-attachments/assets/6b381ff2-cdde-4bdf-9b0c-6eb5e6b5ed3f" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
+</div>
+
+## Hosted URL
+Download the latest APK and start playing! 🎮  
 
 <a href="http://bit.ly/4hLVMaj" target="_blank">
   <img src="https://github.com/user-attachments/assets/10070ed8-a6f2-4fe2-89d5-01797d5b1260" alt="Download APK" width="200"/>
@@ -12,53 +29,42 @@ Want to try the game? Download the latest APK and start playing! 🎮
 🔽 **Click Below to Download** 🔽  
 [📥 Download APK](http://bit.ly/4hLVMaj)  
 
-## Demo Preview  
-Watch the game in action! 🎥  
+## Demo Video
 [![Scribble Demo](https://img.youtube.com/vi/-l84KezWrF0/1.jpg)](https://youtu.be/-l84KezWrF0)  
 
+## Features Implemented
 
-## Table of Contents
-* [Features](#features)
-* [Technologies Used](#technologies-used)
-* [Installation](#installation)
-* [Usage](#usage)
-* [Screenshots](#screenshots)
+### Frontend
+* **Interactive Drawing Canvas:** A flexible drawing board with color palette and eraser tools
+* **Real-Time Rendering:** Seamless display of drawings as they are created
+* **Live Chat Interface:** Interactive chat system for guessing words
+* **Timer Display:** Visual countdown for each drawing round
+* **Dynamic Leaderboard:** Real-time score updates
+* **Room Creation & Joining:** Interface for creating and joining game rooms
 
-## Features
+### Backend
+* **Real-Time Communication:** Socket.io implementation for instant data transmission
+* **Game Logic Management:** Word selection, turn rotation, and scoring algorithms
+* **Room Management System:** Creation, deletion, and management of game rooms
+* **Database Integration:** Storage and retrieval of game data
 
-### Multiplayer Gameplay
-* **Real-Time Drawing & Guessing:** Play with multiple users in a single session.
-* **Custom Rooms:** Create private rooms and invite friends to play together.
+## Technologies/Libraries/Packages Used
+* **Flutter:** Frontend framework for cross-platform mobile application
+* **Dart:** Programming language for Flutter application
+* **Node.js & Express:** Backend framework for handling server-side operations
+* **Socket.io:** Real-time bidirectional event-based communication
+* **MongoDB:** NoSQL database for data storage
+* **Mongoose:** MongoDB object modeling for Node.js
+* **Flutter Canvas:** For drawing functionality
+* **Flutter_colorpicker:** For color palette implementation
 
-### Interactive Drawing
-* **Canvas Drawing:** Players can sketch their assigned word using a flexible drawing board.
-* **Color Palette:** Choose different colors to make your drawings clearer.
-* **Eraser:** Fix mistakes easily with the eraser tool.
+## Thought Behind the Project
+Scribble was designed to bring people together through creativity and fun. In today's digital world, we wanted to create an engaging multiplayer experience that combines artistic expression with word games. The project aims to provide a simple yet addictive gameplay experience that can be enjoyed by players of all ages. The real-time nature of the game promotes quick thinking and creativity, while the social aspect encourages friendly competition and interaction.
 
-### Word Guessing & Scoring
-* **Word Selection:** Players are assigned a random word.
-* **Live Chat:** Players can guess the word in real-time through an interactive chat.
-* **Scoring System:** Earn points based on the speed and accuracy of guesses.
-
-### Additional Features
-* **Timer:** Countdown for each drawing round to keep the game engaging.
-* **Leaderboard:** Displays the top players based on accumulated points.
-
-## Technologies Used
-* **Flutter:** Frontend framework for building a cross-platform mobile application.
-* **Node.js & Express:** Backend framework for handling real-time game logic and communication.
-* **MongoDB:** Database used for storing game sessions, users, and scores.
-* **Socket.io:** Enables real-time drawing and guessing communication.
-
-## Installation
+## Local Setup
 
 ### Prerequisites
-Ensure you have the following installed on your system:
-- **Flutter SDK**: [Download here](https://flutter.dev/docs/get-started/install)
-- **Node.js & npm**: [Download here](https://nodejs.org/)
-- **MongoDB**: [Download here](https://www.mongodb.com/try/download/community)
-
-### Steps to Run the App Locally
+### Steps to Setup Locally
 
 1. **Clone the Repository**
    ```sh
@@ -101,30 +107,8 @@ Ensure you have the following installed on your system:
      flutter run
      ```
 
-Now, the app should be running locally! 🚀
-
-## Usage
-1. Open the game and choose a nickname.
-2. Create a private room and share the invite link.
-3. When it's your turn, draw the given word within the time limit.
-4. If you're guessing, type the correct word in the chat before time runs out.
-5. Earn points for correct guesses and win by having the highest score!
-
-## Screenshots
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/ad771d5b-38c7-4c32-a8c7-67f10f818ced" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
-  <img src="https://github.com/user-attachments/assets/97196193-ca8a-47e3-8d93-bf0b500ff416" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
-  <img src="https://github.com/user-attachments/assets/9369bb61-7f43-4f1c-8c7e-b439c8576b11" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
-</div>
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/314a9245-6a4f-4ad5-a56d-7ac5af7d2a37" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
-  <img src="https://github.com/user-attachments/assets/8714749b-8349-44ce-9bbe-19e6b281918f" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
-  <img src="https://github.com/user-attachments/assets/506f0277-61a9-449a-bef4-06e45b5955c0" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
-</div>
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/a1edb8b4-6d26-41ad-aac1-e88135d1887d" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
-  <img src="https://github.com/user-attachments/assets/6b381ff2-cdde-4bdf-9b0c-6eb5e6b5ed3f" width="250px" height="450px" style="object-fit: cover; margin: 5px;" />
-</div>
-
-
-Enjoy the game and happy sketching! 🎨
+## Team Members
+- [Atharv Jagzap](https://github.com/ajax-39)
+- [Amogh Deshpande](https://github.com/Amogh050)
+- [Pratik Baviskar](https://github.com/PratikBav)
+<!-- Add all team members with their GitHub profiles if possible -->
